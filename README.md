@@ -1,25 +1,38 @@
 # TSA aka Tanzu Sample Application
 
-## Checks
+## Registry credentials
 
-[ ] PVC/PV (read and write)
+See this kubernetes doc [section](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/).
 
-## Notes
+As an example you can create a registry secret by providing credentials on the command line as below:
 
-For NS add the following to the container.spec using the `downward API` :
-
-```yaml
-spec:
-  containers:
-   - env:
-      - name: POD_NAMESPACE
-        valueFrom:
-          fieldRef:
-            fieldPath: metadata.namespace
-      - name: K8S_DEPLOYMENT
-        valueFrom:
-            fieldRef:
-                fieldPath: metadata.name
+```shell
+kubectl create secret docker-registry regcred --docker-server=<your-registry-server> --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>
 ```
 
-And then get the value of the env `POD_NAMESPACE`
+where:
+
+* `<your-registry-server` is your Private Docker Registry FQDN. Use https://index.docker.io/v1/ for DockerHub.
+* `your-name` is your Docker username.
+* `your-pword` is your Docker password.
+* `your-email` is your Docker email.
+
+## Storage
+
+TSA use PVC to store SQL data (SQLite file). So `tsa` will be deploy as a `StatefulSet` including PVC object.
+
+## Deployment
+
+For the impatient you can run the following command within your terminal:
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/bzhtux/tsa/main/manifest.yml
+```
+
+## Access
+
+Point your browser to the ogress url mentioned in the manifest file:
+
+```text
+https://sub.fqdn
+```
