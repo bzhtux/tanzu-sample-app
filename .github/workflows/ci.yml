@@ -2,9 +2,7 @@
 
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
     branches:
         - "*"
@@ -22,14 +20,10 @@ env:
   TSA_LOADER_IMAGE_NAME: tsa-loader
   TSA_TEST_TAG: bzhtux/tsa:test
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   mod:
     runs-on: ubuntu-latest
-    # permissions:
-    #   contents: read
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/setup-go@v4
         with:
           go-version: '1.21'
@@ -43,14 +37,20 @@ jobs:
         version: ['1.21']
     name: Go ${{ matrix.version }}
     steps:
-    - uses: actions/setup-go@v4
+    - name: Setup Go
+      uses: actions/setup-go@v4
       with:
         go-version: ${{ matrix.version }}
-    - uses: actions/checkout@v4
-    - run: go install github.com/onsi/ginkgo/v2/ginkgo
-    - run: go get github.com/onsi/gomega/...
-    - run: go vet ./...
-    - run: ginkgo run -p ./... -bench=./... -vv
+    - name: Checkout source code
+      uses: actions/checkout@v4
+    - name: Install Ginkgo
+      run: go install github.com/onsi/ginkgo/v2/ginkgo
+    - name: Install Gomega
+      run: go get github.com/onsi/gomega/...
+    - name: Run go vet
+      run: go vet ./...
+    - name: Run tests
+      run: ginkgo run -p ./... -bench=./... -vv
   build_loader:
     needs: [mod, test]
     runs-on: ubuntu-latest
@@ -58,12 +58,15 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: docker/setup-buildx-action@v3
-      - uses: docker/build-push-action@v5
+      - name: Checkoout source code
+        uses: actions/checkout@v4
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build loader image
+        uses: docker/build-push-action@v5
         with:
           context: .
-          load: false
+          load: true
           file: Dockerfile.loader
   build_tsa:
     needs: [mod, test, build_loader]
@@ -72,11 +75,13 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: docker/setup-buildx-action@v3
-      - name: install goss and dgoss to test docker images
-        run: curl -fsSL https://goss.rocks/install | sh
-      - name: build for test
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
+      # - name: install goss and dgoss to test docker images
+      #   run: curl -fsSL https://goss.rocks/install | sh
+      - name: build tsa image
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -84,7 +89,7 @@ jobs:
           file: Dockerfile.app
           tags: ${{ env.TSA_TEST_TAG }}
           outputs: type=docker,dest=/tmp/tsa_test.tar
-      - name: Upload artifact
+      - name: Upload artifact (docker image in tar format)
         uses: actions/upload-artifact@v3
         with:
           name: tsa_test
