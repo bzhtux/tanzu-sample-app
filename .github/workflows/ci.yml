@@ -83,16 +83,5 @@ jobs:
           load: true
           file: Dockerfile.app
           tags: ${{ env.TSA_TEST_TAG }}
-  test_tsa_image:
-    needs: [mod, test, build_tsa]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: docker/setup-buildx-action@v3
-      - name: install goss and dgoss to test docker images
-        run: curl -fsSL https://goss.rocks/install | sh
       - name: test with dgoss
         run: dgoss run ${{ env.TSA_TEST_TAG }}
