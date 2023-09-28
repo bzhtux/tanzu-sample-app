@@ -94,7 +94,7 @@ jobs:
       - name: Download container image
         uses: actions/download-artifact@v3
         with:
-          name: tsa_test
+          name: tsa_test.tar
           path: /tmp
       - name: Load image
         run: |
