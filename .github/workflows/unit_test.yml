@@ -1,0 +1,44 @@
+# This is a basic workflow to help you get started with Actions
+
+name: unit_testing
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  push:
+    branches:
+        - "*"
+    tags:
+      - v*
+  pull_request:
+    branches: ["release", "main"]
+
+permissions:
+  contents: read
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  mod:
+    runs-on: ubuntu-latest
+    # permissions:
+    #   contents: read
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+      - uses: actions/checkout@v4
+      - run: go mod tidy && git diff --exit-code go.mod go.sum
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ['1.20', '1.21']
+    name: Go ${{ matrix.version }}
+    steps:
+    - uses: actions/setup-go@v4
+      with:
+        go-version: ${{ matrix.version }}
+    - uses: actions/checkout@v4
+    - run: go vet ./...
+    - run: ginkgo run -p ./... -bench=./... -vv
