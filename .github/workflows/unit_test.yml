@@ -40,5 +40,7 @@ jobs:
       with:
         go-version: ${{ matrix.version }}
     - uses: actions/checkout@v4
+    - run: go install github.com/onsi/ginkgo/v2/ginkgo
+    - run: go get github.com/onsi/gomega/...
     - run: go vet ./...
     - run: ginkgo run -p ./... -bench=./... -vv
