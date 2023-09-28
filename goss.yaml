@@ -6,6 +6,7 @@ user:
 process:
   tini:
     running: true
+    skip: false
 package:
   curl:
     installed: true
