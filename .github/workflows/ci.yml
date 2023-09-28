@@ -84,6 +84,11 @@ jobs:
           file: Dockerfile.app
           tags: ${{ env.TSA_TEST_TAG }}
           outputs: type=docker,dest=/tmp/tsa_test.tar
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: tsa_test
+          path: /tmp/tsa_test.tar
   tsa_test:
     needs: [mod, test, build_loader,build_tsa]
     runs-on: ubuntu-latest
@@ -94,7 +99,7 @@ jobs:
       - name: Download container image
         uses: actions/download-artifact@v3
         with:
-          name: tsa_test.tar
+          name: tsa_test
           path: /tmp
       - name: Load image
         run: |
