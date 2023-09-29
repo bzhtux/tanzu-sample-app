@@ -79,8 +79,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup buildx
         uses: docker/setup-buildx-action@v3
-      # - name: install goss and dgoss to test docker images
-      #   run: curl -fsSL https://goss.rocks/install | sh
       - name: build tsa image
         uses: docker/build-push-action@v5
         with:
@@ -94,13 +92,15 @@ jobs:
         with:
           name: tsa_test
           path: /tmp/tsa_test.tar
-  tsa_test:
+  test_tsa_image:
     needs: [mod, test, build_loader,build_tsa]
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
     steps:
+      - name: install goss and dgoss to test docker images
+        run: curl -fsSL https://goss.rocks/install | sh
       - name: Download container image
         uses: actions/download-artifact@v3
         with:
