@@ -1,5 +1,7 @@
 # TSA aka Tanzu Sample Application
 
+[![CI](https://github.com/bzhtux/tanzu-sample-app/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/bzhtux/tanzu-sample-app/actions/workflows/ci.yml)
+
 ## Registry credentials
 
 See this kubernetes doc [section](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/).
