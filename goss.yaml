@@ -1,0 +1,20 @@
+user:
+  app:
+    exists: true
+    uid: 10000
+    shell: /bin/sh
+process:
+  tini:
+    running: true
+    skip: false
+package:
+  curl:
+    installed: true
+  jq:
+    installed: true
+  tini:
+    installed: true
+file:
+  /app/data/db/tsa.db:
+    exists: true
+    filetype: file

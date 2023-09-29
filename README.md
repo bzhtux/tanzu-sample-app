@@ -1,5 +1,7 @@
 # TSA aka Tanzu Sample Application
 
+[![CI](https://github.com/bzhtux/tanzu-sample-app/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/bzhtux/tanzu-sample-app/actions/workflows/ci.yml)
+
 ## Registry credentials
 
 See this kubernetes doc [section](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/).
@@ -12,7 +14,7 @@ kubectl create secret docker-registry regcred --docker-server=<your-registry-ser
 
 where:
 
-* `<your-registry-server` is your Private Docker Registry FQDN. Use https://index.docker.io/v1/ for DockerHub.
+* `<your-registry-server` is your Private Docker Registry FQDN. Use "https://index.docker.io/v1/" for DockerHub.
 * `your-name` is your Docker username.
 * `your-pword` is your Docker password.
 * `your-email` is your Docker email.

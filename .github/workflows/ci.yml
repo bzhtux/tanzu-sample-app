@@ -1,0 +1,214 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+on:
+  push:
+    branches:
+        - "*"
+    tags:
+      - v*
+  pull_request:
+    branches: ["release", "main"]
+
+permissions:
+  contents: read
+
+env:
+  REGISTRY: ghcr.io
+  TSA_IMAGE_NAME: tsa
+  TSA_LOADER_IMAGE_NAME: tsa-loader
+  TSA_TEST_TAG: bzhtux/tsa:test
+
+jobs:
+  mod:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+      - uses: actions/checkout@v4
+      - run: go mod tidy && git diff --exit-code go.mod go.sum
+  test:
+    needs: mod
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ['1.21']
+    name: Go ${{ matrix.version }}
+    steps:
+    - name: Setup Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: ${{ matrix.version }}
+    - name: Checkout source code
+      uses: actions/checkout@v4
+    - name: Install Ginkgo
+      run: go install github.com/onsi/ginkgo/v2/ginkgo
+    - name: Install Gomega
+      run: go get github.com/onsi/gomega/...
+    - name: Run go vet
+      run: go vet ./...
+    - name: Run tests
+      run: ginkgo run -p ./... -bench=./... -vv
+  build_loader:
+    needs: [test]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkoout source code
+        uses: actions/checkout@v4
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build loader image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          load: true
+          file: Dockerfile.loader
+  build_tsa:
+    needs: [build_loader]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
+      - name: build tsa image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          load: true
+          file: Dockerfile.app
+          tags: ${{ env.TSA_TEST_TAG }}
+          outputs: type=docker,dest=/tmp/tsa_test.tar
+      - name: Upload artifact (docker image in tar format)
+        uses: actions/upload-artifact@v3
+        with:
+          name: tsa_test
+          path: /tmp/tsa_test.tar
+  test_tsa_image:
+    needs: [build_tsa]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      - name: install goss and dgoss to test docker images
+        run: curl -fsSL https://goss.rocks/install | sh
+      - name: Download container image
+        uses: actions/download-artifact@v3
+        with:
+          name: tsa_test
+          path: /tmp
+      - name: Load image
+        run: |
+          docker load --input /tmp/tsa_test.tar
+      - name: test with dgoss
+        run: dgoss run ${{ env.TSA_TEST_TAG }}
+  build_and_push_loader:
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+    needs: [build_loader]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to ghcr.io
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHR_TOKEN }}
+      - name: Extract metadata (tags and labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.TSA_LOADER_IMAGE_NAME }}
+          tags: |
+            type=ref,event=tag
+      - name: build with tag or release
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          file: Dockerfile.loader
+  # build_and_push_loader:
+  #   if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+  #   needs: [build_loader]
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #     packages: write
+  #   steps:
+  #     - name: Checkout source code
+  #       uses: actions/checkout@v4
+  #     - name: Setup buildx
+  #       uses: docker/setup-buildx-action@v3
+  #     - name: Login to ghcr.io
+  #       uses: docker/login-action@v3
+  #       with:
+  #         registry: ${{ env.REGISTRY }}
+  #         username: ${{ github.actor }}
+  #         password: ${{ secrets.GHR_TOKEN }}
+  #     - name: Extract metadata (tags and labels)
+  #       id: meta
+  #       uses: docker/metadata-action@v5
+  #       with:
+  #         images: ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.TSA_LOADER_IMAGE_NAME }}
+  #         tags: |
+  #           type=ref,event=tag
+  #     - name: build with tag or release
+  #       uses: docker/build-push-action@v5
+  #       with:
+  #         context: .
+  #         push: true
+  #         tags: ${{ steps.meta.outputs.tags }}
+  #         labels: ${{ steps.meta.outputs.labels }}
+  #         file: Dockerfile.loader
+  build_and_push_app:
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+    needs: [build_tsa]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to ghcr.io
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHR_TOKEN }}
+      - name: Extract metadata (tags and labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.TSA_IMAGE_NAME }}
+          tags: |
+            type=ref,event=tag
+      - name: build with tag or release
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          file: Dockerfile.app

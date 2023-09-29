@@ -1,0 +1,338 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: repeat(2, auto) 1fr auto;
+}
+
+#topHeader {
+    background-color: #ffffff;
+    padding: 10px 20px;
+    display: grid;
+    grid-template-columns: 150px 200px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#topHeader #socials ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: end;
+}
+
+#topHeader #socials ul a {
+    color: #333052;
+    transition: color .3s;
+    padding: 5px;
+}
+
+#topHeader #socials ul a:hover {
+    color: #6ba4ff;
+}
+
+#banner {
+    background-image: url('../images/mainBanner.jpg');
+    height: 100px;
+    background-size: cover;
+}
+
+#banner h1 {
+    background-color: rgba(255, 255, 255, .6);
+    padding: 50px;
+    margin: 0;
+    width: 100%;
+    font-size: 1.5em;
+    color: #00368C;
+    text-align: right;
+}
+
+#mainNav {
+    background-color: #d8d8da;
+}
+
+#mainNav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#mainNav ul li {
+    position: relative;
+}
+
+#mainNav ul li ul {
+    height: 0;
+    overflow: hidden;
+}
+
+#mainNav ul li ul li {
+    background-color: #d8d8da;
+}
+
+#mainNav ul li ul li a {
+    font-size: .9em;
+    padding-left: 40px;
+}
+
+#mainNav ul li a,
+#mainNav ul li label {
+    display: block;
+    text-decoration: none;
+    color: #7c7c91;
+    font-size: 1.2em;
+    padding: 10px 20px;
+    transition: background-color .3s;
+}
+
+#mainNav ul li a:hover,
+#mainNav ul li label:hover {
+    background-color: #273976;
+}
+
+#mainNav input.subMenuToggler {
+    display: none;
+}
+
+#mainNav input.subMenuToggler~label::after {
+    content: "\025BC";
+    font-size: .5em;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+#mainNav input.subMenuToggler:checked~label::after {
+    content: "\025B2"
+}
+
+#mainNav input.subMenuToggler:checked~ul {
+    height: auto;
+}
+
+#content {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr minmax(300px, 1024px) 1fr;
+}
+
+#content>* {
+    grid-column: 2 / 3;
+}
+
+#mainContent.cards {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+#mainContent .card {
+    background-color: #EEE;
+    border: 1px solid #00368C;
+    border-radius: 5px;
+}
+
+#mainContent .card a {
+    text-decoration: none;
+    color: #00368C;
+    display: grid;
+    grid-template-rows: 200px;
+    height: 100%;
+}
+
+#mainContent .card figure {
+    padding: 0;
+    margin: 0;
+}
+
+#mainContent .card figure img {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px 4px 0 0;
+    object-fit: cover;
+    object-position: center center;
+}
+
+#mainContent .card .card-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+#mainContent .card .card-content .card-title {
+    font-size: 1.1em;
+}
+
+#mainContent .card .card-content .card-body {
+    font-size: .8em;
+}
+
+#mainContent .card .card-content .card-footer {
+    margin-top: auto;
+}
+
+#mainContent .card .card-content .card-footer button {
+    display: inline-block;
+    padding: 5px;
+    background-color: #d8d8da;
+    color: #FFF;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    transition: background-color .3s;
+}
+
+#mainContent .card .card-content .card-footer button:hover {
+    background-color: #c2c2c3;
+}
+
+#mainContent.gallery figure {
+    margin: 0;
+    padding: 0;
+}
+
+#mainContent.gallery figure figcaption {
+    background-color: rgba(107, 164, 255, 0.8);
+    color: #fff;
+    padding: 10px;
+}
+
+aside {
+    background-color: #00368C;
+}
+
+#category {
+    padding: 20px;
+}
+
+#category h1 {
+    color: #FF9700;
+    margin: 0;
+    font-size: 1.2em;
+}
+
+#category nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px 0;
+}
+
+#category nav ul li a {
+    display: block;
+    background-color: #FFF;
+    color: #00368C;
+    text-decoration: none;
+    padding: 10px;
+    border: 1px solid #FF9700;
+    transition: background-color .3s;
+    display: flex;
+    justify-content: space-between;
+}
+
+#category nav ul li:first-child a {
+    border-radius: 5px 5px 0 0;
+}
+
+#category nav ul li:last-child a {
+    border-radius: 0 0 5px 5px;
+}
+
+#category nav ul li a:hover {
+    background-color: #eee;
+}
+
+#category nav ul li a span {
+    font-size: .6em;
+    background-color: #00368C;
+    color: #FFF;
+    padding: 2px;
+    border-radius: 5px;
+    min-width: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#mainFooter {
+    font-size: .8rem;
+    background-color: #d8d8da;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 200px);
+    justify-content: space-between;
+    align-items: end;
+}
+
+#mainFooter #copyright {
+    color: #7c7c91;
+}
+
+#mainFooter #footerNav ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+#mainFooter #footerNav ul li a {
+    color: #7c7c91;
+    text-decoration: none;
+    display: block;
+    padding: 5px;
+    background-color: #eee;
+    border: 1px solid #7c7c91;
+    border-bottom: none;
+    transition: background-color .3s;
+}
+
+#mainFooter #footerNav ul li:first-child a {
+    border-radius: 5px 5px 0 0;
+}
+
+#mainFooter #footerNav ul li:last-child a {
+    border-bottom: 1px solid #7c7c91;
+    border-radius: 0 0 5px 5px;
+}
+
+#mainFooter #footerNav ul li a:hover {
+    background-color: #FFF;
+}
+
+@media screen and (min-width: 576px) {
+    #mainNav ul {
+        display: flex;
+        justify-content: center;
+    }
+
+    #mainNav ul li ul {
+        position: absolute;
+        z-index: 10000;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    #mainNav ul li ul li a {
+        padding-left: 20px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #banner {
+        background-position: center center;
+    }
+
+    #mainFooter #footerContent section {
+        border-right: solid 1px #FFF;
+        border-bottom: none;
+        padding: 20px;
+    }
+
+    #mainFooter #footerContent section:last-child {
+        border: none;
+    }
+}

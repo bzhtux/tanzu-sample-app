@@ -1,0 +1,77 @@
+package main
+
+import (
+	"log"
+	"net/http"
+	"os"
+	"time"
+
+	"log/slog"
+
+	slogformatter "github.com/samber/slog-formatter"
+	sloggin "github.com/samber/slog-gin"
+
+	"github.com/bzhtux/tsa/internal/tsa"
+	"github.com/bzhtux/tsa/internal/utils"
+	"github.com/bzhtux/tsa/models"
+
+	_ "go.uber.org/automaxprocs"
+
+	"github.com/gin-gonic/gin"
+)
+
+func main() {
+	utils.DefaultDBFile = "/app/data/db/tsa.db"
+	// Create a slog logger, which:
+	//   - Logs to stdout.
+	//   - RFC3339 with UTC time format.
+	logger := slog.New(
+		slogformatter.NewFormatterHandler(
+			slogformatter.TimezoneConverter(time.UTC),
+			slogformatter.TimeFormatter(time.DateTime, nil),
+		)(
+			slog.NewTextHandler(os.Stdout, nil),
+		),
+	)
+
+	log.Printf("Tanzu Sample Application is starting ...")
+	config := utils.GetConfig()
+	log.Printf("Loading SQLite file: %s", config)
+	db := utils.ConnectDB(config)
+	err := db.AutoMigrate(&models.HttpStatusCode{})
+	if err != nil {
+		log.Printf("Error Migration Model: %s", err.Error())
+	}
+	h := tsa.NewBaseHandler(db)
+
+	gin.SetMode(gin.ReleaseMode)
+	router := gin.Default()
+	router.Use(sloggin.New(logger))
+	router.LoadHTMLGlob("./data/public/templates/*")
+	router.Static("/assets", "./data/public/assets")
+	router.Static("/picture", "./data/public/img")
+	router.Static("/static", "./data/public/html")
+	router.MaxMultipartMemory = 16 << 32 // 16 MiB
+
+	router.GET("/healtz", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "OK",
+		})
+	})
+	router.GET("/", func(c *gin.Context) {
+		c.Redirect(http.StatusPermanentRedirect, "/web")
+	})
+	v1 := router.Group("/api/v1")
+	{
+		v1.GET("/", h.GetAllHttpStatusCodes)
+		v1.GET("/code/:codename", h.GetOneHttpStatusCode)
+	}
+
+	web := router.Group("/web")
+	{
+		web.GET("/", h.GetIndex)
+		web.GET("/code/:codename", h.DisplayCode)
+	}
+
+	router.Run(":8080")
+}
