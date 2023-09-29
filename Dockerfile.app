@@ -23,7 +23,7 @@ LABEL maintainer="Yannick Foeillet <yfoeillet@vmware.com>"
 RUN apk --no-cache add curl jq tini
 RUN adduser -s /bin/sh -u 10000 -D app
 RUN mkdir -p /goss
-RUN COPY goss.yaml /goss
+COPY goss.yaml /goss
 WORKDIR /app
 RUN mkdir /app/data
 RUN mkdir /app/data/db
