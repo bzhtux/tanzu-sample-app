@@ -99,6 +99,8 @@ jobs:
       contents: read
       packages: write
     steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
       - name: install goss and dgoss to test docker images
         run: curl -fsSL https://goss.rocks/install | sh
       - name: Download container image
@@ -109,10 +111,8 @@ jobs:
       - name: Load image
         run: |
           docker load --input /tmp/tsa_test.tar
-      - name: debug
-        run: pwd && ls -ltr && cat $PWD/*.sh
       - name: test with dgoss
-        run: GOSS_FILES_PATH=$PWD dgoss run ${{ env.TSA_TEST_TAG }}
+        run: dgoss run ${{ env.TSA_TEST_TAG }}
   # build_and_push_loader:
   #   needs: [mod, test, build_loader, build_tsa]
   #   runs-on: ubuntu-latest
