@@ -110,7 +110,7 @@ jobs:
         run: |
           docker load --input /tmp/tsa_test.tar
       - name: test with dgoss
-        run: dgoss run ${{ env.TSA_TEST_TAG }}
+        run: dgoss -e GOSS_FILES_PATH="." run ${{ env.TSA_TEST_TAG }}
   # build_and_push_loader:
   #   needs: [mod, test, build_loader, build_tsa]
   #   runs-on: ubuntu-latest
