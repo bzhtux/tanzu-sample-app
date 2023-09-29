@@ -135,7 +135,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.TSA_LOADER_IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.TSA_LOADER_IMAGE_NAME }}
           tags: |
             type=ref,event=tag
       - name: build with tag or release
