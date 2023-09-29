@@ -22,12 +22,7 @@ LABEL maintainer="Yannick Foeillet <yfoeillet@vmware.com>"
 # wokeignore:rule=he/him/his
 RUN apk --no-cache add curl jq tini
 RUN adduser -s /bin/sh -u 10000 -D app
-RUN mkdir -p /goss
-COPY goss.yaml /goss
-RUN pwd && ls -l /goss
 WORKDIR /app
-COPY goss.yaml .
-RUN pwd && ls -l /goss
 RUN mkdir /app/data
 RUN mkdir /app/data/db
 COPY data/public /app/data/public
