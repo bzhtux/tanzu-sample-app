@@ -52,7 +52,7 @@ jobs:
     - name: Run tests
       run: ginkgo run -p ./... -bench=./... -vv
   build_loader:
-    needs: [mod, test]
+    needs: [test]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -69,7 +69,7 @@ jobs:
           load: true
           file: Dockerfile.loader
   build_tsa:
-    needs: [mod, test, build_loader]
+    needs: [build_loader]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -93,7 +93,7 @@ jobs:
           name: tsa_test
           path: /tmp/tsa_test.tar
   test_tsa_image:
-    needs: [mod, test, build_loader,build_tsa]
+    needs: [build_tsa]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -110,7 +110,7 @@ jobs:
         run: |
           docker load --input /tmp/tsa_test.tar
       - name: debug
-        run: pws && ls -ltr
+        run: pwd && ls -ltr && cat $PWD/*.sh
       - name: test with dgoss
         run: GOSS_FILES_PATH=$PWD dgoss run ${{ env.TSA_TEST_TAG }}
   # build_and_push_loader:
