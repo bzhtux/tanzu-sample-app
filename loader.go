@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	utils.DefaultDBFile = "/app/data/db/tsa.db"
+	utils.DefaultDBFile = "data/db/sqlite.d"
 	log.Printf("Tanzu Sample Application Loader is running ...")
 	config := utils.GetConfig()
 	log.Printf("Loading SQLite file: %s", config)
