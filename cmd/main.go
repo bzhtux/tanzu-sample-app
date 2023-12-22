@@ -21,7 +21,8 @@ import (
 )
 
 func main() {
-	utils.DefaultDBFile = "/app/data/db/tsa.db"
+	// utils.DefaultDBFile = "/app/data/db/tsa.db"
+	utils.DefaultDBFile = "data/db/sqlite.d"
 	// Create a slog logger, which:
 	//   - Logs to stdout.
 	//   - RFC3339 with UTC time format.
