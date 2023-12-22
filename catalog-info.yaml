@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: tanzu-sample-app
+  annotations:
+    github.com/project-slug: bzhtux/tanzu-sample-app
+spec:
+  type: other
+  lifecycle: unknown
+  owner: bzhtux
