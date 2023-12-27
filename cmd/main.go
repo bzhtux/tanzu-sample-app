@@ -21,8 +21,8 @@ import (
 )
 
 func main() {
-	// utils.DefaultDBFile = "/app/data/db/tsa.db"
-	utils.DefaultDBFile = "data/db/sqlite.d"
+	projectDir := utils.GetProjectDir()
+	utils.DefaultDBFile = projectDir + "/tsa.db"
 	// Create a slog logger, which:
 	//   - Logs to stdout.
 	//   - RFC3339 with UTC time format.
@@ -38,6 +38,7 @@ func main() {
 	log.Printf("Tanzu Sample Application is starting ...")
 	config := utils.GetConfig()
 	log.Printf("Loading SQLite file: %s", config)
+	tsa.DBLoader()
 	db := utils.ConnectDB(config)
 	err := db.AutoMigrate(&models.HttpStatusCode{})
 	if err != nil {
