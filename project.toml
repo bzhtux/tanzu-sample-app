@@ -1,0 +1,10 @@
+# project.toml
+[ build ]
+
+[[ build.env ]]
+name="BP_GO_TARGETS"
+value="./cmd"
+
+[[ build.env ]]
+name="BP_KEEP_FILES"
+value="data/public/assets/css/*:data/public/assets/images/*:data/public/html/*:data/public/img/*:data/public/templates/*"
