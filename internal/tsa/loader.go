@@ -1,4 +1,4 @@
-package main
+package tsa
 
 import (
 	"log"
@@ -7,8 +7,8 @@ import (
 	"github.com/bzhtux/tsa/models"
 )
 
-func main() {
-	utils.DefaultDBFile = "data/db/sqlite.d"
+func DBLoader() {
+	// utils.DefaultDBFile = "data/db/sqlite.d"
 	log.Printf("Tanzu Sample Application Loader is running ...")
 	config := utils.GetConfig()
 	log.Printf("Loading SQLite file: %s", config)
