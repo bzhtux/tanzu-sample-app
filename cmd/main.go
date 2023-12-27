@@ -46,13 +46,13 @@ func main() {
 	}
 	h := tsa.NewBaseHandler(db)
 
-	gin.SetMode(gin.ReleaseMode)
+	// gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 	router.Use(sloggin.New(logger))
-	router.LoadHTMLGlob("./data/public/templates/*")
-	router.Static("/assets", "./data/public/assets")
-	router.Static("/picture", "./data/public/img")
-	router.Static("/static", "./data/public/html")
+	router.LoadHTMLGlob(projectDir + "/data/public/templates/*")
+	router.Static("/assets", projectDir+"/data/public/assets")
+	router.Static("/picture", projectDir+"/data/public/img")
+	router.Static("/static", projectDir+"/data/public/html")
 	router.MaxMultipartMemory = 16 << 32 // 16 MiB
 
 	router.GET("/healtz", func(c *gin.Context) {
