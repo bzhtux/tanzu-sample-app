@@ -15,6 +15,6 @@ package:
   tini:
     installed: true
 file:
-  /app/data/db/tsa.db:
+  ./tsa.db:
     exists: true
     filetype: file
