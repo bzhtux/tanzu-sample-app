@@ -84,6 +84,7 @@ func (h *BaseHandler) GetIndex(c *gin.Context) {
 			"status":  "200",
 			"message": "ok",
 			"data":    codes,
+			"title":   "Home",
 		})
 	}
 }
