@@ -69,7 +69,7 @@ jobs:
   #         load: true
   #         file: Dockerfile.loader
   build_tsa:
-    # needs: [build_loader]
+    needs: [test]
     runs-on: ubuntu-latest
     permissions:
       contents: read
