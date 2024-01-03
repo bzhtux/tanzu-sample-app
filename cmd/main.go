@@ -52,7 +52,7 @@ func main() {
 	router.LoadHTMLGlob(projectDir + "/data/public/templates/*")
 	router.Static("/assets", projectDir+"/data/public/assets")
 	router.Static("/picture", projectDir+"/data/public/img")
-	router.Static("/static", projectDir+"/data/public/html")
+	router.Static("/html", projectDir+"/data/public/html")
 	router.MaxMultipartMemory = 16 << 32 // 16 MiB
 
 	router.GET("/healtz", func(c *gin.Context) {
@@ -74,6 +74,10 @@ func main() {
 		web.GET("/", h.GetIndex)
 		web.GET("/code/:codename", h.DisplayCode)
 	}
+
+	router.NoRoute(func(c *gin.Context) {
+		c.Redirect(http.StatusTemporaryRedirect, "/html/404.html")
+	})
 
 	router.Run("0.0.0.0:8080")
 }
