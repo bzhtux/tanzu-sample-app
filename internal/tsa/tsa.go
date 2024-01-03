@@ -1,6 +1,7 @@
 package tsa
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/bzhtux/tsa/models"
@@ -101,6 +102,7 @@ func (h *BaseHandler) DisplayCode(c *gin.Context) {
 			"status":  "200",
 			"message": "ok",
 			"data":    code,
+			"title":   fmt.Sprint(code.Code) + " : " + string(code.Name),
 		})
 	}
 }
