@@ -96,7 +96,7 @@ func (h *BaseHandler) DisplayCode(c *gin.Context) {
 
 	res := h.db.Where("Code = ?", codeID).First(&code)
 	if res.RowsAffected == 0 {
-		c.Redirect(http.StatusTemporaryRedirect, "/static/404.html")
+		c.Redirect(http.StatusTemporaryRedirect, "/html/404.html")
 	} else {
 		c.HTML(http.StatusOK, "code.html", gin.H{
 			"status":  "200",
