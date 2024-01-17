@@ -53,6 +53,7 @@ func main() {
 	router.Static("/assets", projectDir+"/data/public/assets")
 	router.Static("/picture", projectDir+"/data/public/img")
 	router.Static("/html", projectDir+"/data/public/html")
+	// router.Static("/icons", projectDir+"/data/public/html")
 	router.MaxMultipartMemory = 16 << 32 // 16 MiB
 
 	router.GET("/healtz", func(c *gin.Context) {

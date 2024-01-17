@@ -7,4 +7,4 @@ value="./cmd"
 
 [[ build.env ]]
 name="BP_KEEP_FILES"
-value="data/public/assets/css/*:data/public/assets/images/*:data/public/html/*:data/public/img/*:data/public/templates/*"
+value="data/public/assets/css/*:data/public/assets/images/*:data/public/html/*:data/public/img/*:data/public/templates/*:data/public/assets/icons/*:data/public/assets/node_modules/*:data/public/html/clarity-assets-master/*"
