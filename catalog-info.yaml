@@ -4,6 +4,8 @@ metadata:
   name: tanzu-sample-app
   annotations:
     github.com/project-slug: bzhtux/tanzu-sample-app
+  labels:
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=tsa'
 spec:
   type: other
   lifecycle: unknown
