@@ -1,11 +1,11 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: tanzu-sample-app
+  name: tsa
   annotations:
-    github.com/project-slug: bzhtux/tanzu-sample-app
+    github.com/project-slug: bzhtux/tsa
     'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=tsa'
 spec:
-  type: other
+  type: web
   lifecycle: unknown
   owner: bzhtux
