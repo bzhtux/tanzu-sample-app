@@ -1,1 +1,104 @@
-<h1>404: Not Found</h1>
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Not Found</title>
+    <link href="/assets/node_modules/modern-normalize.css/modern-normalize.css" rel="stylesheet" />
+    <link href="/assets/node_modules/@cds/core/global.min.css" rel="stylesheet" />
+    <link href="/assets/node_modules/@cds/city/css/bundles/default.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/@clr/ui@16.0.0/clr-ui.min.css" />
+    <link rel="stylesheet" href="/assets/node_modules//@clr/icons/clr-icons.min.css" />
+      <!--CLARITY ICONS STYLE-->
+  <link rel="stylesheet" href="https://unpkg.com/clarity-icons/clarity-icons.min.css">
+
+  <!--CLARITY ICONS DEPENDENCY: CUSTOM ELEMENTS POLYFILL-->
+  <script src="https://unpkg.com/@webcomponents/custom-elements/custom-elements.min.js"></script>
+
+  <!--CLARITY ICONS API & ALL ICON SETS-->
+  <script src="https://unpkg.com/clarity-icons/clarity-icons.min.js"></script>
+    <!-- <link rel="javascript" href="/assets/node_modules/@cds/core/icon/register.js" /> -->
+    <!-- <script src="/assets/node_modules/@cds/core/icon/register.js"></script> -->
+<style>
+    .clr-footer {
+        /* background: #c1c1c1; */
+        height: 60px;
+        line-height: 60px;
+        padding: O;
+    }
+</style>
+</head>
+
+<body cds-text="body">
+<div class="main-container">
+    <header class="header-2">
+        <div class="branding">
+            <a href="/" class="nav-link">
+                <clr-icon shape="application" size="24"></clr-icon>
+                <span class="title">Golang Sample App</span>
+            </a>
+        </div>
+        <div class="header-nav">
+            <a href="" class="active nav-link nav-text">Home</a>
+            <a href="" class="nav-link nav-text">Add</a>
+            <a href="" class="nav-link nav-text">About</a>
+        </div>
+        
+    </header>
+
+    <div class="clr-row clr-align-items-center clr-justify-content-around">
+        <div class="clr-col-lg-auto">
+            <div class="card">
+                <h1 class="card-header"><strong>Not Found</strong></h1>
+                <div class="card-block">
+                    <div class="card-img">
+                        <img src="/picture/404.jpg" alt="Not Found">
+                    </div>
+                    <div class="card-text">
+                        <p>
+                            <strong>Code:</strong>
+                            404<br />
+                            <strong>Name:</strong>
+                            Not Found<br />
+                            <strong>Description:</strong>
+                            Resource not found !<br />
+                        </p>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-sm btn-link">Home</button>
+                    <button class="btn btn-sm btn-link" onclick="parent.window.history.go(-1)">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="clr-row">
+    <header class="header-2">
+        <section id="copyright">
+            <p>&copy; 2023 - Tanzu Sample App</p>
+        </section>
+        <nav id="footerNav">
+            <ul>
+                <li><a href="#">Cookies free</a></li>
+                <li><a href="#">Source code</a></li>
+            </ul>
+        </nav>
+    </header>
+    </div> -->
+    <br />
+    <div class="clr-footer">
+        <header class="header-2">
+            <div class="branding">
+                <!-- <p>&copy; 2023 - Tanzu Sample App</p> -->
+                <span class="title">&copy; 2023 - Golang Sample App</span>
+            </div>
+        
+        </header>
+    </div>
+</div>
+</body>
+
+</html>

@@ -1,10 +1,16 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: tanzu-sample-app
+  name: tsa
+  description: Tanzu Golang Web App
+  tags:
+    - golang
+    - web
+    - tanzu
   annotations:
-    github.com/project-slug: bzhtux/tanzu-sample-app
+    github.com/project-slug: bzhtux/tsa
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=tsa'
 spec:
-  type: other
-  lifecycle: unknown
-  owner: bzhtux
+  type: service
+  lifecycle: experimental
+  owner: default-team

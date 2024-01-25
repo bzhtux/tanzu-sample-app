@@ -1,6 +1,7 @@
 package tsa
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/bzhtux/tsa/models"
@@ -84,6 +85,7 @@ func (h *BaseHandler) GetIndex(c *gin.Context) {
 			"status":  "200",
 			"message": "ok",
 			"data":    codes,
+			"title":   "Home",
 		})
 	}
 }
@@ -94,12 +96,13 @@ func (h *BaseHandler) DisplayCode(c *gin.Context) {
 
 	res := h.db.Where("Code = ?", codeID).First(&code)
 	if res.RowsAffected == 0 {
-		c.Redirect(http.StatusTemporaryRedirect, "/static/404.html")
+		c.Redirect(http.StatusTemporaryRedirect, "/html/404.html")
 	} else {
 		c.HTML(http.StatusOK, "code.html", gin.H{
 			"status":  "200",
 			"message": "ok",
 			"data":    code,
+			"title":   fmt.Sprint(code.Code) + " : " + string(code.Name),
 		})
 	}
 }
