@@ -2,15 +2,18 @@
 FROM ghcr.io/bzhtux/golang:latest AS build-env
 LABEL maintainer="Yannick Foeillet <bzhtux@gmail.com>"
 
+ARG GOOS=linux
+ARG GOARCH=amd64
+
 WORKDIR /app
 RUN mkdir /app/data
 RUN mkdir /app/data/db
 ADD go.mod go.sum ./
-RUN go mod download
+RUN GOOS=${GOOS} GOARCH=${GOARCH} go mod download
 
 COPY . ./
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /tsa
+RUN CGO_ENABLED=0 GOOS=${GOOS} GOARCH=${GOARCH} go build -o /tsa ./cmd/main.go
 
 # final image
 FROM scratch
