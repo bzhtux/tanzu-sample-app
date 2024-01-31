@@ -22,7 +22,7 @@ LABEL maintainer="Yannick Foeillet <bzhtux@gmail.com>"
 WORKDIR /app
 COPY --from=build-env /tsa /app/
 COPY --from=build-env /app/data /app/data
-COPY --from=build-env /data/public /app/data/public
+COPY --from=build-env /app/data/public /app/data/public
 USER 1000
 
 EXPOSE 8080
