@@ -6,6 +6,7 @@ ARG GOOS=linux
 ARG GOARCH=amd64
 
 WORKDIR /app
+RUN apk --no-cache add build-base git gcc sqlite-dev
 RUN mkdir /app/data
 RUN mkdir /app/data/db
 RUN touch /app/data/db/tsa.db
