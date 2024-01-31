@@ -11,6 +11,7 @@ RUN mkdir /app/data
 RUN mkdir /app/data/db
 RUN touch /app/data/db/tsa.db
 ADD go.mod go.sum ./
+RUN go env -w CGO_ENABLED=1
 RUN GOOS=${GOOS} GOARCH=${GOARCH} go mod download
 
 COPY . ./
