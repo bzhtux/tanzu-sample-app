@@ -10,7 +10,7 @@ ARG GOOS=darwin
 ARG GOARCH=arm64
 
 WORKDIR /app
-RUN apk --no-cache add build-base git gcc sqlite-dev
+RUN apk --no-cache add build-base git gcc sqlite-dev clang
 RUN mkdir /app/data
 RUN mkdir /app/data/db
 RUN touch /app/data/db/tsa.db
