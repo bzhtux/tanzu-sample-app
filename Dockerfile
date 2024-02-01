@@ -37,4 +37,4 @@ USER 1000
 EXPOSE 8080
 
 # Run
-CMD ["tsa"]
+CMD ["/app/tsa"]
