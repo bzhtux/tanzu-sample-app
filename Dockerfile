@@ -11,8 +11,7 @@ ARG GOARCH=amd64
 
 WORKDIR /app
 RUN apk --no-cache add build-base git gcc sqlite-dev
-RUN mkdir /app/data
-RUN mkdir /app/data/db
+RUN mkdir -p /app/data/db
 RUN touch /app/data/db/tsa.db
 ADD go.mod go.sum ./
 RUN go env -w CGO_ENABLED=1
@@ -38,4 +37,4 @@ USER 1000
 EXPOSE 8080
 
 # Run
-CMD ["./tsa"]
+CMD ["tsa"]
