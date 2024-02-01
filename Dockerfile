@@ -36,5 +36,7 @@ USER 1000
 
 EXPOSE 8080
 
+WORKDIR /
+
 # Run
 CMD ["/app/tsa"]
